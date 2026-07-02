@@ -9,6 +9,7 @@ import com.bandas.dto.UsuarioFilter;
 import com.bandas.model.Usuario;
 import com.bandas.repository.UsuarioRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -65,6 +66,24 @@ public class UsuarioService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResultadoResponse(false, "Hubo un error en a transaccion");
+		}
+	}
+	
+	@Transactional
+	public ResultadoResponse changeActive(Integer id) {
+		var usuario = usuarioRepository.findById(id).orElse(null);
+		
+		try {
+			usuario.setActivo(!usuario.getActivo());
+			
+			var estado = usuario.getActivo() ? "activado" : "desactivado";
+			var mensaje = String.format("Usuario con ID %s %s", usuario.getIdUsuario(), estado);
+			
+			return new ResultadoResponse(true, mensaje);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResultadoResponse(false, "Hubo un error en la transaccion");
 		}
 	}
 	

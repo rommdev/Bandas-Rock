@@ -46,10 +46,15 @@ public class Usuario {
 	@JoinColumn(name = "id_tipo")
 	private Tipo tipo;
 	
+	@Column(name = "activo")
+	private Boolean activo;
+	
 	public String getFullName() {
 		return String.format("%s %s", nombres, apellidos);
 	}
 	
-	
+	public String getActivoDescripcion() {
+		return activo ? "Activo" : "Inactivo";
+	}
 	
 }
