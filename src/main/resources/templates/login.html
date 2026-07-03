@@ -3,64 +3,101 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Ejemplos Prof. Ernesto Arbulú - CIBERFARMA - Login</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ROCKLOGIN — Backstage Access</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link
+		href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+		rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	
+
 	<link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 
 <body>
-	<div class="container mt-5">
-		<div class="row justify-content-center">
-			<div class="box-login">
+	<div class="stage-light"></div>
 
-				<div class="card shadow-lg">
-					<div class="card-header text-center bg-info text-white">
-						<h3>CIBERFARMA - Farmacia virtual</h3>
-					</div>
+	<div class="pass">
+		<div class="perf top">
+			<span></span><span></span><span></span><span></span><span></span>
+			<span></span><span></span><span></span><span></span><span></span>
+		</div>
 
-					<div class="card-body">
-						<h5 class="text-center mb-4">Inicio de Sesión</h5>
+		<div class="pass-inner">
+			<div class="tag-row">
+				<span class="tag">Backstage Access · All Areas</span>
+				<span class="led" aria-hidden="true"></span>
+			</div>
 
-						<form th:action="@{/login/iniciar-sesion}" method="get" th:object="${filter}">
-							<div class="mb-3">
-								<label class="form-label">Cuenta</label>
-								<div class="input-group">
-									<span class="input-group-text">
-										<i class="fa-solid fa-user"></i>
-									</span>
-									<input type="text" class="form-control" placeholder="Ingrese su cuenta"
-									 th:field="*{correo}">
-								</div>
-							</div>
+			<h1 class="brand">ROCK<span>LOGIN</span></h1>
+			<p class="subtitle">Enchufa tu cuenta y sube al escenario</p>
 
-							<div class="mb-3">
-								<label class="form-label">Clave</label>
-								<div class="input-group">
-									<span class="input-group-text">
-										<i class="fa-solid fa-key"></i>
-									</span>
-									<input type="password" class="form-control" placeholder="Ingrese su clave"
-									 th:field="*{password}">
-								</div>
-							</div>
-
-							<div class="d-grid">
-								<button type="submit" class="btn btn-dark">
-									<i class="fas fa-sign-in-alt"></i> INGRESAR
-								</button>
-							</div>
-						</form>
-					</div>
-
-					<div class="card-footer text-muted text-center">
-						&copy; 2025 CIBERFARMA - Todos los derechos reservados
+			<form th:action="@{/login/iniciar-sesion}" method="get" th:object="${filter}">
+				<div class="field">
+					<label class="user">Correo</label>
+					<div class="input-wrap">
+						<input type="text" id="user" name="user" placeholder="Ingrese su correo" th:field="*{correo}">
 					</div>
 				</div>
-			</div>
+
+				<div class="field">
+					<label class="pass">Clave</label>
+					<div class="input-wrap">
+						<input type="password" id="pass" name="pass" placeholder="Ingrese su clave"
+							th:field="*{password}">
+						<button type="button" class="amp-toggle" id="toggleBtn" aria-pressed="false"
+							aria-controls="pass">
+							<span class="dot"></span>
+							<span id="toggleLabel">Ver</span>
+						</button>
+					</div>
+				</div>
+
+				<div class="row-between">
+					<label class="remember">
+						<input type="checkbox" id="remember">
+						Mantenerme conectado
+					</label>
+					<a href="#">¿Olvidaste la contraseña?</a>
+				</div>
+
+				<div class="d-grid">
+					<button type="submit" class="pick-btn">
+						<i class="fas fa-sign-in-alt"></i> INGRESAR
+					</button>
+				</div>
+				<div class="divider">O continúa con</div>
+
+				<p class="signup">¿Primera vez en el escenario? <a href="#">Crea tu cuenta</a></p>
 		</div>
+
+		<div class="perf bottom">
+			<span></span><span></span><span></span><span></span><span></span>
+			<span></span><span></span><span></span><span></span><span></span>
+		</div>
+	</div>
+
+	<script>
+		const toggleBtn = document.getElementById('toggleBtn');
+		const toggleLabel = document.getElementById('toggleLabel');
+		const passInput = document.getElementById('pass');
+
+		toggleBtn.addEventListener('click', () => {
+			const isPassword = passInput.type === 'password';
+			passInput.type = isPassword ? 'text' : 'password';
+			toggleBtn.classList.toggle('on', isPassword);
+			toggleBtn.setAttribute('aria-pressed', String(isPassword));
+			toggleLabel.textContent = isPassword ? 'Ocultar' : 'Ver';
+		});
+	</script>
+
+
+	</form>
+	</div>
+	</div>
+	</div>
+	</div>
 	</div>
 	<th:block th:utext="${alert}"></th:block>
 </body>
