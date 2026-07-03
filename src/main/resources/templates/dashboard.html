@@ -1,11 +1,350 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layoutBase(~{::contenido})">
-
 <div th:fragment="contenido">
 	<div class="row mb-3">
-		<h2>Dashboard</h2>
+		<h2></h2>
 	</div>
 
-</div>
+	<style>
+		.video-dashboard{
+			display:flex;
+			gap:24px;
+			margin-top:60px;
+			margin-left:80px;
+			margin-right:40px;
+			flex-wrap:wrap;
+			font-family:inherit;
+		}
+		.vd-main{
+			flex:0 0 auto;
+			max-width:1500px;
+		}
+		.vd-main-frame-wrap{
+			position:relative;
+			width:1200px;
+			max-width:100%;
+			aspect-ratio:16/9;
+			background:#000;
+			border-radius:6px;
+			overflow:hidden;
+			box-shadow:0 0 0 1px #222;
+		}
+		.vd-main-frame-wrap iframe{
+			width:100%;
+			height:100%;
+			border:0;
+			display:block;
+		}
+		.vd-main-title{
+			margin-top:14px;
+			font-size:20px;
+			font-weight:600;
+			color: white;
+		}
+		.vd-edit-main-btn{
+			margin-top:10px;
+			background:transparent;
+			border:1px solid #444;
+			color:#aaa;
+			padding:6px 12px;
+			border-radius:5px;
+			font-size:12px;
+			cursor:pointer;
+		}
+		.vd-edit-main-btn:hover{border-color:#39ff6a;color:#39ff6a;}
 
+		.vd-sidebar{
+			flex:0 0 320px;
+			display:flex;
+			flex-direction:column;
+			gap:16px;
+			max-height:660px;
+			overflow-y:auto;
+			padding-right:4px;
+			color: white;
+		}
+		.vd-thumb-card{
+			cursor:pointer;
+			position:relative;
+		}
+		.vd-thumb-frame{
+			position:relative;
+			width:100%;
+			aspect-ratio:16/9;
+			border-radius:5px;
+			overflow:hidden;
+			background:#111;
+			border:2px solid transparent;
+		}
+		.vd-thumb-card.active .vd-thumb-frame{
+			border-color: #220022;
+		}
+		.vd-thumb-frame img{
+			width:100%;height:100%;object-fit:cover;display:block;
+			opacity:.92;
+		}
+		.vd-thumb-card:hover .vd-thumb-frame img{opacity:1;}
+		.vd-play-icon{
+			position:absolute;top:50%;left:50%;
+			transform:translate(-50%,-50%);
+			width:30px;height:30px;border-radius:50%;
+			background:rgba(0,0,0,.4);
+			border:1.5px solid white;
+			display:flex;align-items:center;justify-content:center;
+		}
+		.vd-play-icon svg{width:10px;height:10px;fill:#220022;margin-left:2px;}
+		.vd-thumb-title{
+			margin-top:6px;
+			font-size:13px;
+			font-weight:600;
+			line-height:1.35;
+		}
+		.vd-thumb-card.active .vd-thumb-title{color:white;}
+		.vd-edit-icon{
+			position:absolute;top:6px;right:6px;
+			width:22px;height:22px;border-radius:4px;
+			background:rgba(0,0,0,.6);
+			border:1px solid rgba(255,255,255,.2);
+			display:flex;align-items:center;justify-content:center;
+			color:#ccc;font-size:12px;
+			opacity:0;
+			transition:opacity .15s;
+		}
+		.vd-thumb-card:hover .vd-edit-icon{opacity:1;}
+		.vd-add-card{
+			border:1.5px dashed #333;
+			border-radius:5px;
+			aspect-ratio:16/9;
+			display:flex;flex-direction:column;align-items:center;justify-content:center;
+			gap:4px;color:#888;cursor:pointer;
+		}
+		.vd-add-card:hover{border-color:#39ff6a;color:#39ff6a;}
+		.vd-add-card span{font-size:22px;line-height:1;}
+
+		.vd-overlay{
+			position:fixed;inset:0;
+			background:rgba(0,0,0,.7);
+			display:none;
+			align-items:center;justify-content:center;
+			z-index:999;
+			padding:20px;
+		}
+		.vd-overlay.open{display:flex;}
+		.vd-modal{
+			background:#151515;
+			border:1px solid #2a2a2a;
+			border-radius:8px;
+			width:100%;max-width:420px;
+			padding:22px;
+			color:#eee;
+		}
+		.vd-modal h3{margin:0 0 16px;font-size:16px;}
+		.vd-field{margin-bottom:12px;}
+		.vd-field label{display:block;font-size:12px;color:#999;margin-bottom:5px;}
+		.vd-field input{
+			width:100%;background:#000;border:1px solid #333;color:#eee;
+			padding:8px 10px;border-radius:5px;font-size:13px;box-sizing:border-box;
+		}
+		.vd-field input:focus{outline:none;border-color:#39ff6a;}
+		.vd-modal-actions{display:flex;justify-content:space-between;align-items:center;margin-top:18px;}
+		.vd-btn{border:none;padding:8px 14px;border-radius:5px;font-size:13px;cursor:pointer;font-weight:600;}
+		.vd-btn-save{background:#39ff6a;color:#00220c;}
+		.vd-btn-cancel{background:transparent;color:#999;}
+		.vd-btn-delete{background:transparent;color:#ff5c5c;font-size:12px;}
+	</style>
+
+	<div class="video-dashboard">
+		<div class="vd-main">
+			<div class="vd-main-frame-wrap">
+				<iframe id="vdMainFrame"
+					src=""
+					title="Video principal"
+					frameborder="0"
+					allow="autoplay; encrypted-media; picture-in-picture"
+					allowfullscreen>
+				</iframe>
+			</div>
+			<h5 class="vd-main-title" id="vdMainTitle">&nbsp;</h5>
+			<button type="button" class="vd-edit-main-btn" id="vdEditMainBtn">Editar video principal</button>
+		</div>
+
+		<div class="vd-sidebar" id="vdSidebar"></div>
+	</div>
+
+	<!-- Modal edición -->
+	<div class="vd-overlay" id="vdOverlay">
+		<div class="vd-modal">
+			<h3 id="vdModalTitle">Editar video</h3>
+			<div class="vd-field">
+				<label>Título</label>
+				<input id="vdFieldTitle" type="text" placeholder="Ej: Megadeth - Angry Again">
+			</div>
+			<div class="vd-field">
+				<label>Link de YouTube</label>
+				<input id="vdFieldUrl" type="text" placeholder="https://www.youtube.com/watch?v=... o ID del video">
+			</div>
+			<div class="vd-modal-actions">
+				<button type="button" class="vd-btn vd-btn-delete" id="vdDeleteBtn">Eliminar</button>
+				<div style="display:flex;gap:8px;">
+					<button type="button" class="vd-btn vd-btn-cancel" id="vdCancelBtn">Cancelar</button>
+					<button type="button" class="vd-btn vd-btn-save" id="vdSaveBtn">Guardar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script th:inline="none">
+	(function(){
+		// Lista inicial de videos: título + ID de YouTube.
+		// Puedes editar estos valores directamente aquí o usar el botón de edición (✎) en pantalla.
+		var vdVideos = [
+			{ title: "Black Sabbath - Heaven and Hell", id: "uWAhd4KkVUU" },
+			{ title: "Black Sabbath - Master of Insanity", id: "pBtEME-ciiE" },
+			{ title: "Metallica - Master of Puppets", id: "thmXL8_qldU" },
+			{ title: "Megadeth - Angry Again", id: "IehTuJE591s" },
+		];
+
+		var vdActiveIndex = 0;
+		var vdEditingIndex = null;
+
+		var mainFrame = document.getElementById('vdMainFrame');
+		var mainTitle = document.getElementById('vdMainTitle');
+		var sidebar = document.getElementById('vdSidebar');
+		var overlay = document.getElementById('vdOverlay');
+		var fieldTitle = document.getElementById('vdFieldTitle');
+		var fieldUrl = document.getElementById('vdFieldUrl');
+		var modalTitle = document.getElementById('vdModalTitle');
+		var deleteBtn = document.getElementById('vdDeleteBtn');
+
+		function extractYoutubeId(input){
+			input = (input || '').trim();
+			if(/^[a-zA-Z0-9_-]{11}$/.test(input)) return input;
+			var patterns = [
+				/(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/,
+				/(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+				/(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/
+			];
+			for(var i=0;i<patterns.length;i++){
+				var m = input.match(patterns[i]);
+				if(m) return m[1];
+			}
+			return input;
+		}
+
+		function embedUrl(id){
+			return "https://www.youtube.com/embed/" + id + "?autoplay=1&mute=1";
+		}
+
+		function thumbUrl(id){
+			return "https://img.youtube.com/vi/" + id + "/mqdefault.jpg";
+		}
+
+		function playMain(i){
+			vdActiveIndex = i;
+			var v = vdVideos[i];
+			mainFrame.src = embedUrl(v.id);
+			mainTitle.textContent = v.title;
+			renderSidebar();
+		}
+
+		function renderSidebar(){
+			sidebar.innerHTML = '';
+			vdVideos.forEach(function(v, i){
+				var card = document.createElement('div');
+				card.className = 'vd-thumb-card' + (i === vdActiveIndex ? ' active' : '');
+				card.innerHTML =
+					'<div class="vd-thumb-frame">' +
+						'<img src="' + thumbUrl(v.id) + '" alt="">' +
+						'<div class="vd-play-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>' +
+						'<div class="vd-edit-icon" data-i="' + i + '">&#9998;</div>' +
+					'</div>' +
+					'<div class="vd-thumb-title">' + v.title + '</div>';
+
+				card.addEventListener('click', function(e){
+					if(e.target.closest('.vd-edit-icon')) return;
+					playMain(i);
+				});
+				card.querySelector('.vd-edit-icon').addEventListener('click', function(e){
+					e.stopPropagation();
+					openModal(i);
+				});
+				sidebar.appendChild(card);
+			});
+
+			var addCard = document.createElement('div');
+			addCard.className = 'vd-add-card';
+			addCard.innerHTML = '<span>+</span><div style="font-size:12px;">Agregar video</div>';
+			addCard.addEventListener('click', function(){ openModal(null); });
+			sidebar.appendChild(addCard);
+		}
+
+		function openModal(i){
+			vdEditingIndex = i;
+			if(i === null){
+				modalTitle.textContent = 'Agregar video';
+				fieldTitle.value = '';
+				fieldUrl.value = '';
+				deleteBtn.style.display = 'none';
+			} else {
+				modalTitle.textContent = 'Editar video';
+				fieldTitle.value = vdVideos[i].title;
+				fieldUrl.value = vdVideos[i].id;
+				deleteBtn.style.display = 'inline-block';
+			}
+			overlay.classList.add('open');
+		}
+
+		function closeModal(){
+			overlay.classList.remove('open');
+			vdEditingIndex = null;
+		}
+
+		document.getElementById('vdCancelBtn').addEventListener('click', closeModal);
+		document.getElementById('vdEditMainBtn').addEventListener('click', function(){ openModal(vdActiveIndex); });
+
+		document.getElementById('vdSaveBtn').addEventListener('click', function(){
+			var id = extractYoutubeId(fieldUrl.value);
+			if(!id){
+				fieldUrl.style.borderColor = '#ff5c5c';
+				return;
+			}
+			var data = { title: fieldTitle.value.trim() || 'Sin título', id: id };
+
+			if(vdEditingIndex === null){
+				vdVideos.push(data);
+				vdActiveIndex = vdVideos.length - 1;
+			} else {
+				vdVideos[vdEditingIndex] = data;
+				if(vdEditingIndex === vdActiveIndex){
+					mainFrame.src = embedUrl(data.id);
+					mainTitle.textContent = data.title;
+				}
+			}
+			renderSidebar();
+			closeModal();
+		});
+
+		deleteBtn.addEventListener('click', function(){
+			if(vdEditingIndex === null) return;
+			vdVideos.splice(vdEditingIndex, 1);
+			if(vdVideos.length === 0){
+				mainFrame.src = '';
+				mainTitle.textContent = 'Sin videos';
+			} else {
+				if(vdActiveIndex >= vdVideos.length) vdActiveIndex = vdVideos.length - 1;
+				playMain(vdActiveIndex);
+			}
+			renderSidebar();
+			closeModal();
+		});
+
+		overlay.addEventListener('click', function(e){
+			if(e.target === overlay) closeModal();
+		});
+
+		// init
+		playMain(0);
+	})();
+	</script>
+</div>
 </html>

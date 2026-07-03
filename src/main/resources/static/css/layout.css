@@ -5,7 +5,9 @@
 	font-family: 'Poppins', sans-serif;
 }
 
+
 body {
+	background-color: #000;
 	background-image: url('/imagenes/pharmacy.jpg');
 	/* ajusta con tu imagen */
 	background-size: cover;
@@ -14,7 +16,10 @@ body {
 	background-position: center;
 	min-height: 100vh;
 }
-
+.mt-2{
+	color: aliceblue;
+	font-size: 30px;
+}
 .header {
 	width: 100%;
 	position: fixed;
@@ -24,10 +29,20 @@ body {
 	z-index: 10;
 }
 
+.btn-menu{
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	margin-left: -310px;
+}
+
 .btn-menu label {
 	color: #fff;
 	font-size: 24px;
 	cursor: pointer;
+}
+.text-white{
+    margin-left: -1000px;
 }
 
 input#btn-menu {
@@ -73,7 +88,7 @@ input#btn-menu {
 .cont-menu nav a {
 	display: block;
 	padding: 15px 20px;
-	color: #c7c7c7;
+	color: white;
 	text-decoration: none;
 	border-left: 5px solid transparent;
 	transition: all 0.3s ease;
@@ -81,8 +96,8 @@ input#btn-menu {
 }
 
 .cont-menu nav a:hover {
-	background: #2a2a2a;
-	border-left: 5px solid #c7c7c7;
+	background: #220022;
+	border-left: 5px solid black;
 }
 
 .cont-menu label {
