@@ -57,6 +57,8 @@ public class Alert {
 							Swal.fire({
 								title: '%s',
 								text: '%s',
+								color: '#220022',
+								background: 'black',
 								imageUrl: '%s',
 								imageWidth: 400,
 								imageHeight: 400,

@@ -46,12 +46,12 @@ public class LoginController {
 		//guardar datos necesarios para la sesion
 		httpSession.setAttribute("idUsuario", usuario.getIdUsuario());
 		httpSession.setAttribute("fullName", usuario.getFullName());
-		httpSession.setAttribute("idTipo", usuario.getTipo());
+		httpSession.setAttribute("idTipo", usuario.getTipo().getIdTipo());
 		
 		//maximo tiempo de inactividad 5min
 		httpSession.setMaxInactiveInterval(300);
 		
-		String alert = Alert.sweetImageUrl("Bienvenido rockero", usuario.getFullName(), "/imagenes/ironMaiden.gif");
+		String alert = Alert.sweetImageUrl("Bienvenido rockero", usuario.getFullName(), "/imagenes/dio.gif");
 		flash.addFlashAttribute("alert", alert);
 		
 		return "redirect:/dashboard";

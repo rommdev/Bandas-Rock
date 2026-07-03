@@ -23,15 +23,11 @@
 							</div>
 							<div class="col-md-12 position-relative">
 								<label for="cuenta" class="form-label"> Cuenta
-								</label> <input type="text" class="form-control" th:field="*{cuenta}"
+								</label> <input type="text" class="form-control" th:field="*{correo}"
 									placeholder="Ingrese una cuenta" required>
 							</div>
-							<input type="hidden" th:field="*{clave}">
-							<div class="col-md-6 position-relative">
-								<label for="fechaNac" class="form-label"> Fecha de nacimiento
-								</label> <input type="date" class="form-control" th:field="*{fechaNac}"
-									placeholder="Seleccione una fecha de nacimiento">
-							</div>
+							<input type="hidden" th:field="*{password}">
+
 							<div class="col-md-6 position-relative">
 								<label for="tipo" class="form-label">tipo</label>
 								<div class="input-group">
