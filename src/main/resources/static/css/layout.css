@@ -5,16 +5,28 @@
 	font-family: 'Poppins', sans-serif;
 }
 
+:root{
+  --bg-black:#0a0a0a;
+  --bg-panel:#131113;
+  --bg-card:#161417;
+  --line:#2a262b;
+  --purple:#9d4dfc;
+  --purple-glow:rgba(157,77,252,.55);
+  --text-main:#eae7ea;
+  --text-mute:#8a8590;
+  --rust:#5c1f1f;
+}
 
-body {
-	background-color: #000;
-	background-image: url('/imagenes/pharmacy.jpg');
-	/* ajusta con tu imagen */
-	background-size: cover;
-	background-attachment: fixed;
-	background-repeat: no-repeat;
-	background-position: center;
-	min-height: 100vh;
+*{box-sizing:border-box;}
+
+body{
+  background-color:var(--bg-black);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+  color:var(--text-main);
+  font-family:'Oswald', sans-serif;
+  font-weight:300;
+  letter-spacing:.02em;
 }
 .mt-2{
 	color: aliceblue;
