@@ -47,7 +47,7 @@
 		
 				<a th:if="${session.idTipo == 1}" th:href="@{/usuario/listado}"><i class="fa-solid fa-users"></i>
 					Usuarios</a>
-				<a th:if="${session.idTipo == 1}" th:href="@{/producto/listado}"><i
+				<a  href="/producto/listado"><i
 						class="fa-solid fa-boxes-stacked"></i> Productos</a>
 				<a th:if ="${session.idTipo == 1 or session.idTipo == 2}" th:href="@{/boleta/listado}"><i
 						class="fa-regular fa-file-lines"></i> Boletas</a>
